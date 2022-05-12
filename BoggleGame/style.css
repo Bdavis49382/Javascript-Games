@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@200;400&family=Nunito&family=Source+Serif+Pro&display=swap');
+
+body {
+    font-family: 'Nunito','sans-serif';
+}
+td {
+    background-color: aliceblue;
+    border: 2px black solid;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    text-align: center;
+    /* border-style: solid; */
+}
+
+h1 {
+    background-color: aqua;
+}
