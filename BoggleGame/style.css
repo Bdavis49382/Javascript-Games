@@ -12,6 +12,9 @@ td {
     text-align: center;
     /* border-style: solid; */
 }
+p {
+    word-wrap:break-word;
+}
 
 h1 {
     background-color: aqua;

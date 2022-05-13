@@ -24,7 +24,7 @@ function printGrid(grid) {
         gameSpace.appendChild(rowElement)
         for (let x=0;x<4;x++){
             let block =document.createElement("td")
-            block.innerText = row[x].letter;
+            block.textContent = row[x].letter;
             rowElement.appendChild(block)
         }
     }
@@ -48,7 +48,7 @@ function makeBlocks(grid) {
         }
     }
     grid.forEach(block => block.getNeighbors(grid));
-    printGrid(grid);
+    
 }
 
 function traverse(words,word,block) {
@@ -58,7 +58,7 @@ function traverse(words,word,block) {
     }
     
     block.neighbors.forEach(neighbor => {
-        if ((!word.includes(neighbor)) && word.length <=5){
+        if ((!word.includes(neighbor)) && word.length <=7){
             traverse(words,word.map(x => x),neighbor);
         }
     })
@@ -71,16 +71,16 @@ function convertWordToString(w){
 
 }
 
-function remember(jsondata) {
+function remember(jsondata,grid) {
 
     let startTime = Date.now();
     let wordList = JSON.parse(jsondata);
-    wordList =wordList.filter(x => x.length<4)
-    let grid = [];
+    wordList =wordList.filter(x => x.length<8)
+    
     let words = [];
     let word = [];
-    let outWords = [];
-    makeBlocks(grid);
+
+    
     // console.log(grid[1])
     for (let i = 0;i<grid.length;i++) {
         word = [];
@@ -93,18 +93,57 @@ function remember(jsondata) {
     wordsAsStrings = words.map(convertWordToString);
     console.log(wordsAsStrings);
     filteredWords = wordsAsStrings.filter(word => wordList.includes(word.toLowerCase()));
-    console.log(filteredWords);
+    finalWords = [];
+    for (let i=0;i<filteredWords.length;i++){
+
+        if(!finalWords.includes(filteredWords[i])){
+            finalWords.push(filteredWords[i]);
+        }
+    }
+    finalWords.sort();
+    startGame(grid)
+    console.log(finalWords);
     // console.log(wordList)
     console.log(`time taken: ${Date.now()-startTime} milliseconds`)
 }
+function displayTimer() {
+    timer = document.createElement("h4");
+    timer.textContent = "60";
+    document.querySelector("#results").appendChild(timer);
+    let timerId =setInterval(x =>updateTimer(timer,timerId),1000);
+}
+function updateTimer(timer,timerId) {
+    if(parseInt(timer.textContent)<=0) {
+        clearTimeout(timerId);
+        displayResults()
+    }
+    else {
 
-function startGame() {
-    document.querySelector("#startButton").innerText = "Restart Game";
+        timer.textContent = parseInt(timer.textContent)-1;
+    }
+}
+function displayResults() {
+    results =document.createElement("p");
+    results.textContent = finalWords.join();
+    document.querySelector("#results").appendChild(results);
+}
+function startGame(grid) {
+    document.querySelector("#loadMessage").remove();
+    displayTimer();
+    printGrid(grid);
+}
+function loadGame() {
+    let grid = [];
+    makeBlocks(grid);
+    document.querySelector("#startButton").remove(); 
+    let loading = document.createElement("p")
+    loading.innerHTML = "<span id=loadMessage>Loading...</span>"
+    document.querySelector("#instruction").appendChild(loading);
     fetch("./word_list.json")
     .then(response => {
         return response.json();
     })
-    .then(jsondata => remember(jsondata));
+    .then(jsondata => remember(jsondata,grid));
 }
 
 
