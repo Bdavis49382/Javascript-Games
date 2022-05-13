@@ -116,6 +116,7 @@ function updateTimer(timer,timerId) {
     if(parseInt(timer.textContent)<=0) {
         clearTimeout(timerId);
         displayResults()
+        document.querySelector("input").remove();
     }
     else {
 
@@ -123,14 +124,29 @@ function updateTimer(timer,timerId) {
     }
 }
 function displayResults() {
-    results =document.createElement("p");
-    results.textContent = finalWords.join();
+    let results =document.createElement("p");
+    results.textContent = `You found ${document.querySelector("#playersWords").childElementCount} out of ${finalWords.length} possible words.\nAll Possible Words:\n${finalWords.join()}`;
     document.querySelector("#results").appendChild(results);
+}
+function submitWord(event) {
+    if(event.code == "Enter"){
+        let inputBox = document.querySelector("input");
+        if(inputBox.value.length>0){
+
+            let word = document.createElement("li");
+            word.textContent = inputBox.value
+            document.querySelector("#playersWords").appendChild(word);
+            inputBox.value = '';
+        }
+    }
 }
 function startGame(grid) {
     document.querySelector("#loadMessage").remove();
     displayTimer();
     printGrid(grid);
+    let inputBox =document.createElement("input");
+    document.addEventListener("keydown",submitWord)
+    document.querySelector("#playerArea").appendChild(inputBox);
 }
 function loadGame() {
     let grid = [];
