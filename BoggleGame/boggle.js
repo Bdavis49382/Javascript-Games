@@ -1,5 +1,6 @@
 // 
 
+
 class Block{
     constructor(letter,x,y) {
         this.letter = letter;
@@ -74,8 +75,10 @@ function convertWordToString(w){
 function remember(jsondata,grid) {
 
     let startTime = Date.now();
-    let wordList = JSON.parse(jsondata);
-    wordList =wordList.filter(x => x.length<8)
+    let wordList = new Set(JSON.parse(jsondata));
+    // let wordList = JSON.parse(jsondata);
+
+    // wordList =wordList.filter(x => x.length<8)
     
     let words = [];
     let word = [];
@@ -92,7 +95,7 @@ function remember(jsondata,grid) {
     // });
     wordsAsStrings = words.map(convertWordToString);
     console.log(wordsAsStrings);
-    filteredWords = wordsAsStrings.filter(word => wordList.includes(word.toLowerCase()));
+    filteredWords = wordsAsStrings.filter(word => wordList.has(word.toLowerCase()));
     finalWords = [];
     for (let i=0;i<filteredWords.length;i++){
 
@@ -101,7 +104,13 @@ function remember(jsondata,grid) {
         }
     }
     finalWords.sort();
-    startGame(grid)
+    document.querySelector("#loadMessage").remove();
+    startButton = document.createElement('button');
+    startButton.textContent = "Start Game";
+    startButton.setAttribute("id","startButton")
+    startButton.addEventListener("click",x => startGame(grid));
+    document.querySelector("#instruction").appendChild(startButton);
+    // startGame(grid)
     console.log(finalWords);
     // console.log(wordList)
     console.log(`time taken: ${Date.now()-startTime} milliseconds`)
@@ -123,10 +132,21 @@ function updateTimer(timer,timerId) {
         timer.textContent = parseInt(timer.textContent)-1;
     }
 }
+function reloadGame() {
+    document.querySelector("#gameSpace").innerHTML='';
+    document.querySelector("#results").innerHTML='';
+    document.querySelector("#playersWords").innerHTML = '';
+    loadGame();
+}
 function displayResults() {
     let results =document.createElement("p");
     results.textContent = `You found ${document.querySelector("#playersWords").childElementCount} out of ${finalWords.length} possible words.\nAll Possible Words:\n${finalWords.join()}`;
     document.querySelector("#results").appendChild(results);
+    reloadButton = document.createElement("button");
+    reloadButton.textContent = "Reload Game";
+    reloadButton.setAttribute("id","startButton");
+    reloadButton.addEventListener("click",reloadGame);
+    document.querySelector("#instruction").appendChild(reloadButton);
 }
 function submitWord(event) {
     if(event.code == "Enter"){
@@ -141,7 +161,8 @@ function submitWord(event) {
     }
 }
 function startGame(grid) {
-    document.querySelector("#loadMessage").remove();
+    
+    document.querySelector("#startButton").remove();
     displayTimer();
     printGrid(grid);
     let inputBox =document.createElement("input");
