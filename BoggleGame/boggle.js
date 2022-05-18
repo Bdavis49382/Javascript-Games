@@ -140,6 +140,7 @@ function reloadGame() {
 }
 function displayResults() {
     let results =document.createElement("p");
+    verifySubmittedWords();
     results.textContent = `You found ${document.querySelector("#playersWords").childElementCount} out of ${finalWords.length} possible words.\nAll Possible Words:\n${finalWords.join()}`;
     document.querySelector("#results").appendChild(results);
     reloadButton = document.createElement("button");
@@ -148,13 +149,22 @@ function displayResults() {
     reloadButton.addEventListener("click",reloadGame);
     document.querySelector("#instruction").appendChild(reloadButton);
 }
+function verifySubmittedWords() {
+    document.querySelector("#playersWords").childNodes.forEach(child => {
+        if(!finalWords.includes(child)) {
+            child.remove();
+        }
+        
+    });
+}
 function submitWord(event) {
     if(event.code == "Enter"){
         let inputBox = document.querySelector("input");
         if(inputBox.value.length>0){
 
             let word = document.createElement("li");
-            word.textContent = inputBox.value
+            word.textContent = inputBox.value;
+            
             document.querySelector("#playersWords").appendChild(word);
             inputBox.value = '';
         }
