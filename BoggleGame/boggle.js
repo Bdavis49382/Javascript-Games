@@ -1,5 +1,5 @@
 // 
-
+let boardSize = 4;
 
 class Block{
     constructor(letter,x,y) {
@@ -18,12 +18,12 @@ function printGrid(grid) {
     // context.fillStyle = "#C1C1C1";
     // context.fillRect(0,0,40,40);
     let gameSpace = document.querySelector("#gameSpace")
-    for(let y=0;y<4;y++) {
+    for(let y=0;y<boardSize;y++) {
         let row = grid.filter(block => block.y == y)
         console.log(row.map(block => block.letter).join(" "))
         let rowElement = document.createElement("tr");
         gameSpace.appendChild(rowElement)
-        for (let x=0;x<4;x++){
+        for (let x=0;x<boardSize;x++){
             let block =document.createElement("td")
             block.textContent = row[x].letter;
             rowElement.appendChild(block)
@@ -32,7 +32,8 @@ function printGrid(grid) {
 }
 function makeBlocks(grid) {
     let count = 0;
-    let newDice = ['AAEEGN',"ELRTTY","AOOTTW","ABBJOO","EHRTVW","CIMOTU","DISTTY","EIOSST","DELRVY","ACHOPS","HIMNQU","EEINSU","EEGHNW","AFFKPS","HLNNRZ","DEILRX"];
+    
+    let newDice = ['AAEEGN',"ELRTTY","AOOTTW","ABBJOO","EHRTVW","CIMOTU","DISTTY","EIOSST","DELRVY","ACHOPS","HIMNQU","EEINSU","EEGHNW","AFFKPS","HLNNRZ","DEILRX","AAEEGN","ACHOPS","AFFKPS","DEILRX","DELRVY","EEGHNW","EIOSST","HIMNQU","HLNNRZ"];
     let shuffledDice = [];
     while (newDice.length >0){
         randomDie = newDice.splice(Math.floor(Math.random()*newDice.length),1)
@@ -42,8 +43,8 @@ function makeBlocks(grid) {
 
     letters = shuffledDice.map(die => die[0].charAt(Math.floor(Math.random()*die[0].length)))
     
-    for (let i=0;i<4;i++){
-        for (let t=0;t<4;t++) {
+    for (let i=0;i<boardSize;i++){
+        for (let t=0;t<boardSize;t++) {
             grid.push(new Block(letters[count],i,t))
             count++;
         }
@@ -138,6 +139,15 @@ function reloadGame() {
     document.querySelector("#playersWords").innerHTML = '';
     loadGame();
 }
+function verifySubmittedWords() {
+    [].slice.call(document.querySelector("#playersWords").children).forEach( function (child) {
+        if(!finalWords.includes(child.textContent.toUpperCase())) {
+            // child.setAttribute("class","red");
+            child.remove();
+        }
+        
+    });
+}
 function displayResults() {
     let results =document.createElement("p");
     verifySubmittedWords();
@@ -149,14 +159,7 @@ function displayResults() {
     reloadButton.addEventListener("click",reloadGame);
     document.querySelector("#instruction").appendChild(reloadButton);
 }
-function verifySubmittedWords() {
-    document.querySelector("#playersWords").childNodes.forEach(child => {
-        if(!finalWords.includes(child)) {
-            child.remove();
-        }
-        
-    });
-}
+
 function submitWord(event) {
     if(event.code == "Enter"){
         let inputBox = document.querySelector("input");
