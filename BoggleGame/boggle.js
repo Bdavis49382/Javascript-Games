@@ -1,29 +1,13 @@
-// import Block from "./blocks.js";
+import makeBlocks from "./blocks.js";
 let boardSize = 4;
-
-class Block {
-  constructor(letter, x, y) {
-    this.letter = letter;
-    this.neighbors = [];
-    this.x = x;
-    this.y = y;
-  }
-  getNeighbors(grid) {
-    this.neighbors = grid.filter(
-      (block) =>
-        Math.abs(block.x - this.x) <= 1 &&
-        Math.abs(block.y - this.y) <= 1 &&
-        !(block.x == this.x && block.y == this.y)
-    );
-  }
-}
+let finalWords = [];
 
 updateButton()
 function updateButton() {
   
   document.querySelector("#gameMode").textContent = boardSize == 4?"You Are Playing: Regular Boggle":"You Are Playing: Big Boggle";
 }
-function changeGameMode() {
+window.changeGameMode = function changeGameMode() {
   boardSize = boardSize == 4 ? 5 : 4;
   updateButton();
 }
@@ -42,55 +26,6 @@ function printGrid(grid) {
       rowElement.appendChild(block);
     }
   }
-}
-function makeBlocks(grid) {
-  let count = 0;
-
-  let newDice = [
-    "AAEEGN",
-    "ELRTTY",
-    "AOOTTW",
-    "ABBJOO",
-    "EHRTVW",
-    "CIMOTU",
-    "DISTTY",
-    "EIOSST",
-    "DELRVY",
-    "ACHOPS",
-    "HIMNQU",
-    "EEINSU",
-    "EEGHNW",
-    "AFFKPS",
-    "HLNNRZ",
-    "DEILRX",
-    "AAEEGN",
-    "ACHOPS",
-    "AFFKPS",
-    "DEILRX",
-    "DELRVY",
-    "EEGHNW",
-    "EIOSST",
-    "HIMNQU",
-    "HLNNRZ",
-  ];
-  let shuffledDice = [];
-  while (newDice.length > 0) {
-    randomDie = newDice.splice(Math.floor(Math.random() * newDice.length), 1);
-
-    shuffledDice.push(randomDie);
-  }
-
-  letters = shuffledDice.map((die) =>
-    die[0].charAt(Math.floor(Math.random() * die[0].length))
-  );
-
-  for (let i = 0; i < boardSize; i++) {
-    for (let t = 0; t < boardSize; t++) {
-      grid.push(new Block(letters[count], i, t));
-      count++;
-    }
-  }
-  grid.forEach((block) => block.getNeighbors(grid));
 }
 
 function traverse(words, word, block) {
@@ -133,9 +68,9 @@ function remember(jsondata, grid) {
   // grid.forEach(block => {
   //     traverse(words,word,block);
   // });
-  wordsAsStrings = words.map(convertWordToString);
+  let wordsAsStrings = words.map(convertWordToString);
   console.log(wordsAsStrings);
-  filteredWords = wordsAsStrings.filter((word) =>
+  let filteredWords = wordsAsStrings.filter((word) =>
     wordList.has(word.toLowerCase())
   );
   finalWords = [];
@@ -146,7 +81,7 @@ function remember(jsondata, grid) {
   }
   finalWords.sort();
   document.querySelector("#loadMessage").remove();
-  startButton = document.createElement("button");
+  let startButton = document.createElement("button");
   startButton.textContent = "Start Game";
   startButton.setAttribute("id", "startButton");
   startButton.addEventListener("click", (x) => startGame(grid));
@@ -157,7 +92,7 @@ function remember(jsondata, grid) {
   console.log(`time taken: ${Date.now() - startTime} milliseconds`);
 }
 function displayTimer() {
-  timer = document.createElement("h4");
+  let timer = document.createElement("h4");
   timer.textContent = "60";
   document.querySelector("#results").appendChild(timer);
   let timerId = setInterval((x) => updateTimer(timer, timerId), 1000);
@@ -196,7 +131,7 @@ function displayResults() {
     finalWords.length
   } possible words.\nAll Possible Words:\n${finalWords.join()}`;
   document.querySelector("#results").appendChild(results);
-  reloadButton = document.createElement("button");
+  let reloadButton = document.createElement("button");
   reloadButton.textContent = "Reload Game";
   reloadButton.setAttribute("id", "startButton");
   reloadButton.addEventListener("click", reloadGame);
@@ -225,10 +160,10 @@ function startGame(grid) {
   document.addEventListener("keydown", submitWord);
   document.querySelector("#playerArea").appendChild(inputBox);
 }
-function loadGame() {
+window.loadGame =  function loadGame() {
   document.querySelector("#gameMode").remove();
   let grid = [];
-  makeBlocks(grid);
+  makeBlocks(grid,boardSize);
   document.querySelector("#startButton").remove();
   let loading = document.createElement("p");
   loading.innerHTML = "<span id=loadMessage>Loading...</span>";
