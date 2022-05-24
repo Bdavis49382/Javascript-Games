@@ -10,13 +10,15 @@
 </head>
 <body>
     <h1>Boggle Practice</h1>
-    <!-- <canvas id="display">Game Display</canvas> -->
+    
     <div id="box">
         <table id="gameSpace">
 
         </table>
     </div>
-        
+    <div id="toggleGameMode">
+        <button id="gameMode" onclick="changeGameMode()"></button>
+    </div>
 
     <section id="instruction">
         <button id="startButton" onclick="loadGame()">Load Game</button>

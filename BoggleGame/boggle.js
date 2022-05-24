@@ -1,4 +1,4 @@
-//
+// import Block from "./blocks.js";
 let boardSize = 4;
 
 class Block {
@@ -18,10 +18,18 @@ class Block {
   }
 }
 
+updateButton()
+function updateButton() {
+  
+  document.querySelector("#gameMode").textContent = boardSize == 4?"You Are Playing: Regular Boggle":"You Are Playing: Big Boggle";
+}
+function changeGameMode() {
+  boardSize = boardSize == 4 ? 5 : 4;
+  updateButton();
+}
+
 function printGrid(grid) {
-  // context.clearRect(0,0,width,height);
-  // context.fillStyle = "#C1C1C1";
-  // context.fillRect(0,0,40,40);
+
   let gameSpace = document.querySelector("#gameSpace");
   for (let y = 0; y < boardSize; y++) {
     let row = grid.filter((block) => block.y == y);
@@ -192,6 +200,8 @@ function displayResults() {
   reloadButton.textContent = "Reload Game";
   reloadButton.setAttribute("id", "startButton");
   reloadButton.addEventListener("click", reloadGame);
+  document.querySelector("#toggleGameMode").innerHTML = `<button id="gameMode" onclick="changeGameMode()"></button>`;
+  updateButton();
   document.querySelector("#instruction").appendChild(reloadButton);
 }
 
@@ -216,6 +226,7 @@ function startGame(grid) {
   document.querySelector("#playerArea").appendChild(inputBox);
 }
 function loadGame() {
+  document.querySelector("#gameMode").remove();
   let grid = [];
   makeBlocks(grid);
   document.querySelector("#startButton").remove();
