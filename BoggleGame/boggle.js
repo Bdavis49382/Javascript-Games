@@ -1,4 +1,5 @@
 import makeBlocks from "./blocks.js";
+import findAllWords from "./wordFinder.js";
 let boardSize = 4;
 let finalWords = [];
 
@@ -28,69 +29,6 @@ function printGrid(grid) {
   }
 }
 
-function traverse(words, word, block) {
-  word.push(block);
-  if (word.length >= 3) {
-    words.push(word);
-  }
-
-  block.neighbors.forEach((neighbor) => {
-    if (!word.includes(neighbor) && word.length <= 7) {
-      traverse(
-        words,
-        word.map((x) => x),
-        neighbor
-      );
-    }
-  });
-}
-
-function convertWordToString(w) {
-  return w.map((block) => block.letter).join("");
-}
-
-function remember(jsondata, grid) {
-  let startTime = Date.now();
-  let wordList = new Set(JSON.parse(jsondata));
-  // let wordList = JSON.parse(jsondata);
-
-  // wordList =wordList.filter(x => x.length<8)
-
-  let words = [];
-  let word = [];
-
-  // console.log(grid[1])
-  for (let i = 0; i < grid.length; i++) {
-    word = [];
-    traverse(words, word, grid[i]);
-    // outWords = outWords.concat(words);
-  }
-  // grid.forEach(block => {
-  //     traverse(words,word,block);
-  // });
-  let wordsAsStrings = words.map(convertWordToString);
-  console.log(wordsAsStrings);
-  let filteredWords = wordsAsStrings.filter((word) =>
-    wordList.has(word.toLowerCase())
-  );
-  finalWords = [];
-  for (let i = 0; i < filteredWords.length; i++) {
-    if (!finalWords.includes(filteredWords[i])) {
-      finalWords.push(filteredWords[i]);
-    }
-  }
-  finalWords.sort();
-  document.querySelector("#loadMessage").remove();
-  let startButton = document.createElement("button");
-  startButton.textContent = "Start Game";
-  startButton.setAttribute("id", "startButton");
-  startButton.addEventListener("click", (x) => startGame(grid));
-  document.querySelector("#instruction").appendChild(startButton);
-  // startGame(grid)
-  console.log(finalWords);
-  // console.log(wordList)
-  console.log(`time taken: ${Date.now() - startTime} milliseconds`);
-}
 function displayTimer() {
   let timer = document.createElement("h4");
   timer.textContent = "60";
@@ -110,7 +48,7 @@ function reloadGame() {
   document.querySelector("#gameSpace").innerHTML = "";
   document.querySelector("#results").innerHTML = "";
   document.querySelector("#playersWords").innerHTML = "";
-  loadGame();
+  window.loadGame();
 }
 function verifySubmittedWords() {
   [].slice
@@ -152,7 +90,7 @@ function submitWord(event) {
     }
   }
 }
-function startGame(grid) {
+window.startGame = function startGame(grid) {
   document.querySelector("#startButton").remove();
   displayTimer();
   printGrid(grid);
@@ -172,5 +110,5 @@ window.loadGame =  function loadGame() {
     .then((response) => {
       return response.json();
     })
-    .then((jsondata) => remember(jsondata, grid));
+    .then((jsondata) => finalWords = findAllWords(jsondata, grid,finalWords));
 }
