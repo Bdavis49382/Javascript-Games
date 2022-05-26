@@ -98,7 +98,7 @@ window.startGame = function startGame(grid) {
   document.addEventListener("keydown", submitWord);
   document.querySelector("#playerArea").appendChild(inputBox);
 }
-window.loadGame =  function loadGame() {
+window.loadGame =  async function loadGame() {
   document.querySelector("#gameMode").remove();
   let grid = [];
   makeBlocks(grid,boardSize);
@@ -106,9 +106,11 @@ window.loadGame =  function loadGame() {
   let loading = document.createElement("p");
   loading.innerHTML = "<span id=loadMessage>Loading...</span>";
   document.querySelector("#instruction").appendChild(loading);
-  fetch("./word_list.json")
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsondata) => finalWords = findAllWords(jsondata, grid,finalWords));
+  let request = await fetch("./word_list.json");
+  let listFile = await request.json();
+  finalWords = findAllWords(listFile,grid,finalWords);
+    // .then((response) => {
+    //   return response.json();
+    // })
+    // .then((jsondata) => finalWords = findAllWords(jsondata, grid,finalWords));
 }

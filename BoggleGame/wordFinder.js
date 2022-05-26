@@ -13,7 +13,7 @@ function traverse(words, word, block,shortenedWordList3,shortenedWordList5) {
   }
 
   block.neighbors.forEach((neighbor) => {
-    if (!word.includes(neighbor) && word.length <= 10) {
+    if (!word.includes(neighbor) && word.length <= 11) {
       traverse(
         words,
         word.map((x) => x),
