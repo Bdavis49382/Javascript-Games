@@ -1,8 +1,8 @@
+
 function traverse(words, word, block,shortenedWordList3,shortenedWordList5) {
   word.push(block);
   
   if (word.length == 3 && !shortenedWordList3.has(convertWordToString(word).toLowerCase())){
-    // console.log(shortenedWordList3.has(convertWordToString(word).toLowerCase()));
     return;
   }
   else if (word.length == 5 && !shortenedWordList5.has(convertWordToString(word).toLowerCase())){
@@ -28,7 +28,7 @@ function convertWordToString(w) {
   return w.map((block) => block.letter).join("");
 }
 
-const findAllWords = function (jsondata, grid, finalWords) {
+const findAllWords = async function (jsondata, grid, finalWords) {
   let startTime = Date.now();
   let wordList = new Set(JSON.parse(jsondata));
   let shortenedWordList3 = JSON.parse(jsondata).map(w => w.slice(0,3));
@@ -44,22 +44,15 @@ const findAllWords = function (jsondata, grid, finalWords) {
   for (let i = 0; i < grid.length; i++) {
     word = [];
     traverse(words, word, grid[i],shortenedWordList3,shortenedWordList5);
-    // outWords = outWords.concat(words);
   }
-  // grid.forEach(block => {
-  //     traverse(words,word,block);
-  // });
+
   let wordsAsStrings = words.map(convertWordToString);
   console.log(wordsAsStrings);
   let filteredWords = wordsAsStrings.filter((word) =>
     wordList.has(word.toLowerCase())
   );
-  finalWords = [];
-  for (let i = 0; i < filteredWords.length; i++) {
-    if (!finalWords.includes(filteredWords[i])) {
-      finalWords.push(filteredWords[i]);
-    }
-  }
+  finalWords = new Set(filteredWords);
+  finalWords = Array.from(finalWords);
   finalWords.sort();
   document.querySelector("#loadMessage").remove();
   let startButton = document.createElement("button");
@@ -71,7 +64,27 @@ const findAllWords = function (jsondata, grid, finalWords) {
   console.log(finalWords);
 
   console.log(`time taken: ${Date.now() - startTime} milliseconds`);
-  return finalWords;
+  return verifyList(finalWords);
 };
+
+async function verifyList(foundWords) {
+  let outWords = new Array();
+  foundWords.forEach(async (word) => {
+    let url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      outWords.push(word);
+      
+    }
+    else {
+
+    }
+
+  })
+
+
+  return outWords;
+}
 
 export default findAllWords;

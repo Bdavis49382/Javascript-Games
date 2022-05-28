@@ -108,9 +108,6 @@ window.loadGame =  async function loadGame() {
   document.querySelector("#instruction").appendChild(loading);
   let request = await fetch("./word_list.json");
   let listFile = await request.json();
-  finalWords = findAllWords(listFile,grid,finalWords);
-    // .then((response) => {
-    //   return response.json();
-    // })
-    // .then((jsondata) => finalWords = findAllWords(jsondata, grid,finalWords));
+  finalWords = await findAllWords(listFile,grid,finalWords);
+  
 }
