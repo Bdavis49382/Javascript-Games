@@ -52,11 +52,17 @@ function reloadGame() {
   window.loadGame();
 }
 function verifySubmittedWords() {
+  let submittedWords = [];
   [].slice
     .call(document.querySelector("#playersWords").children)
     .forEach(function (child) {
-      if (!finalWords.includes(child.textContent.toUpperCase())) {
+      
+      if (!finalWords.includes(child.textContent.toUpperCase())
+       || submittedWords.includes(child.textContent.toUpperCase())) {
         child.remove();
+      }
+      else {
+        submittedWords.push(child.textContent.toUpperCase());
       }
     });
 }
