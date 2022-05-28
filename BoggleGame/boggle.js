@@ -55,7 +55,6 @@ function verifySubmittedWords() {
     .call(document.querySelector("#playersWords").children)
     .forEach(function (child) {
       if (!finalWords.includes(child.textContent.toUpperCase())) {
-        // child.setAttribute("class","red");
         child.remove();
       }
     });
@@ -79,7 +78,8 @@ function displayResults() {
 }
 
 function submitWord(event) {
-  if (event.code == "Enter") {
+
+  if (event.code == "Enter" || event.type == "click") {
     let inputBox = document.querySelector("input");
     if (inputBox.value.length > 0) {
       let word = document.createElement("li");
@@ -96,6 +96,10 @@ window.startGame = function startGame(grid) {
   printGrid(grid);
   let inputBox = document.createElement("input");
   document.addEventListener("keydown", submitWord);
+  let submitButton = document.createElement("button");
+  submitButton.addEventListener("click",submitWord);
+  submitButton.textContent = "Submit";
+  document.querySelector("#playerArea").appendChild(submitButton);
   document.querySelector("#playerArea").appendChild(inputBox);
 }
 window.loadGame =  async function loadGame() {

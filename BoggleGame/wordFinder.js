@@ -35,8 +35,6 @@ const findAllWords = async function (jsondata, grid, finalWords) {
   let shortenedWordList5 = JSON.parse(jsondata).map(w => w.slice(0,5));
   shortenedWordList5 = new Set(shortenedWordList5);
   shortenedWordList3 = new Set(shortenedWordList3);
-  console.log(shortenedWordList3);
-  // wordList = wordList.filter(x => x.length<17)
 
   let words = [];
   let word = [];
