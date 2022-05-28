@@ -40,6 +40,7 @@ function updateTimer(timer, timerId) {
     clearTimeout(timerId);
     displayResults();
     document.querySelector("input").remove();
+    document.querySelector("#submitButton").remove();
   } else {
     timer.textContent = parseInt(timer.textContent) - 1;
   }
@@ -98,6 +99,7 @@ window.startGame = function startGame(grid) {
   document.addEventListener("keydown", submitWord);
   let submitButton = document.createElement("button");
   submitButton.addEventListener("click",submitWord);
+  submitButton.setAttribute('id','submitButton');
   submitButton.textContent = "Submit";
   document.querySelector("#playerArea").appendChild(submitButton);
   document.querySelector("#playerArea").appendChild(inputBox);
