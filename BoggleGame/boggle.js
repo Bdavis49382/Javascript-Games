@@ -2,6 +2,7 @@ import makeBlocks from "./blocks.js";
 import findAllWords from "./wordFinder.js";
 let boardSize = 4;
 let finalWords = [];
+let seconds = 180;
 
 updateButton()
 function updateButton() {
@@ -10,6 +11,16 @@ function updateButton() {
 }
 window.changeGameMode = function changeGameMode() {
   boardSize = boardSize == 4 ? 5 : 4;
+  if (boardSize == 4){
+    document.querySelector("#box").style.width = "200px";
+    document.querySelector("#box").style.height = "235px";
+    document.querySelector("#box").style.backgroundColor = "blue";
+  }
+  else {
+    document.querySelector("#box").style.width = "280px";
+    document.querySelector("#box").style.height = "295px";    
+    document.querySelector("#box").style.backgroundColor = "#1291db";
+  }
   updateButton();
 }
 
@@ -30,22 +41,26 @@ function printGrid(grid) {
 }
 
 function displayTimer() {
+  
   let timer = document.createElement("h4");
-  timer.textContent = "60";
-  document.querySelector("#results").appendChild(timer);
+  timer.setAttribute('id','timer');
+  document.querySelector("#gridBox").appendChild(timer);
   let timerId = setInterval((x) => updateTimer(timer, timerId), 1000);
 }
 function updateTimer(timer, timerId) {
-  if (parseInt(timer.textContent) <= 0) {
+  if (seconds <= 0) {
     clearTimeout(timerId);
     displayResults();
     document.querySelector("input").remove();
     document.querySelector("#submitButton").remove();
+    document.querySelector("#timer").remove();
   } else {
-    timer.textContent = parseInt(timer.textContent) - 1;
+    seconds -= 1;
+    timer.textContent = `${Math.floor(seconds/60)}:${seconds%60}`;
   }
 }
 function reloadGame() {
+  seconds = 180;
   document.querySelector("#gameSpace").innerHTML = "";
   document.querySelector("#results").innerHTML = "";
   document.querySelector("#playersWords").innerHTML = "";
@@ -102,6 +117,7 @@ window.startGame = function startGame(grid) {
   displayTimer();
   printGrid(grid);
   let inputBox = document.createElement("input");
+  inputBox.setAttribute("placeholder","Press Enter To Submit");
   document.addEventListener("keydown", submitWord);
   let submitButton = document.createElement("button");
   submitButton.addEventListener("click",submitWord);

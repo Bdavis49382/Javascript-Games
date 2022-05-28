@@ -10,25 +10,27 @@
 </head>
 <body>
     <h1>Boggle Practice</h1>
+    <div id="gridBox">
+
+        <div id="box">
+            <table id="gameSpace">
     
-    <div id="box">
-        <table id="gameSpace">
-
-        </table>
+            </table>
+        </div>
+        <div id="toggleGameMode">
+            <button id="gameMode" onclick="changeGameMode()"></button>
+        </div>
+    
+        <section id="instruction">
+            <button id="startButton" onclick="loadGame()">Load Game</button>
+        </section>
+        <section id="playerArea">
+            
+        </section>
+        <ul id="playersWords">
+    
+        </ul>
+        <section id="results"></section>
     </div>
-    <div id="toggleGameMode">
-        <button id="gameMode" onclick="changeGameMode()"></button>
-    </div>
-
-    <section id="instruction">
-        <button id="startButton" onclick="loadGame()">Load Game</button>
-    </section>
-    <section id="playerArea">
-        
-    </section>
-    <ul id="playersWords">
-
-    </ul>
-    <section id="results"></section>
 </body>
 </html>

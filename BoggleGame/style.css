@@ -23,12 +23,38 @@ h1 {
     margin-left:0;
     margin-bottom: 5px;
 }
+#gridBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#playerArea {
+    grid-column: 1/2;
+    grid-row:2/3;
+}
 #box {
     width:200px;
+    height:235px;
     background-color: blue;
     border: 5px solid black;
     border-radius: 8px;
 }
 .red {
     color:red;
+}
+#timer {
+    grid-column: 1/2;
+}
+#playersWords {
+    grid-row:1/3;
+    grid-column: 2/3;
+}
+#toggleGameMode {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    align-self: left;
+}
+#results {
+    grid-column: 1/2;
+    word-wrap: break-word;
+    word-break: break-all;
 }
