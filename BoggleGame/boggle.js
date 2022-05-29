@@ -97,6 +97,7 @@ function displayResults() {
   document.querySelector("#toggleGameMode").innerHTML = `<button id="gameMode" onclick="changeGameMode()"></button>`;
   updateButton();
   document.querySelector("#instruction").appendChild(reloadButton);
+  document.querySelector("#playerArea").style.zIndex = "0";
 }
 
 function submitWord(event) {
@@ -125,6 +126,7 @@ window.startGame = function startGame(grid) {
   submitButton.textContent = "Submit";
   document.querySelector("#playerArea").appendChild(submitButton);
   document.querySelector("#playerArea").appendChild(inputBox);
+  document.querySelector("#playerArea").style.zIndex = "2";
 }
 window.loadGame =  async function loadGame() {
   document.querySelector("#gameMode").remove();
