@@ -64,4 +64,5 @@ const makeBlocks = (grid,boardSize) => {
     }
     grid.forEach((block) => block.getNeighbors(grid));
   }
+  
   export default makeBlocks;
